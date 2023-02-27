@@ -20,9 +20,6 @@ import {
   resetPasswordFailure,
   resetPasswordRequest,
   resetPasswordSuccess,
-  verifyUserFailure,
-  verifyUserRequest,
-  verifyUserSuccess,
 } from '../actions/usersActions'
 
 const Toast = Swal.mixin({
@@ -32,17 +29,20 @@ const Toast = Swal.mixin({
   showConfirmButton: false,
   iconColor: "black",
   color: "black",
-  background: "lime"
+  background: "lime",
+  position: "bottom-end",
+  customClass: {
+    loader: "red"
+  }
 })
 
 export function* registrationUserSaga({payload: userData}) {
   try {
     const response = yield axiosApi.post('/users', userData)
     yield put(registrationSuccess(response.data))
-    yield Swal.fire({
-      toast: false,
+    yield Toast.fire({
       icon: 'success',
-      title: `На почту ${response.data.email} отправлено подтверждение`,
+      title: `Вы успешно зарегистрировались!`,
     })
   } catch (e) {
     if (e.response && e.response.data) {
@@ -71,7 +71,6 @@ export function* loginUserSaga({payload: userData}) {
     }
     yield put(loginUserSuccess(response.data))
     yield Toast.fire({
-      position: "top-end",
       icon: 'success',
       title: 'Вы успешно вошли в свой аккаунт',
     })
@@ -91,7 +90,7 @@ export function* logoutUserSaga() {
     yield axiosApi.delete('users/sessions')
 
     yield put(historyPush('/'))
-    yield Cookies.remove('jwt')
+    yield Cookies.remove('greenlife')
     yield Toast.fire({
       icon: 'info',
       title: 'Вы вышли из своего аккаунта',
@@ -115,15 +114,6 @@ export function* deleteUserSaga({payload: id}) {
       icon: 'error',
       title: 'Ошибка!',
     })
-  }
-}
-
-export function* verifyUserSaga(confirmationCode) {
-  try {
-    const response = yield axiosApi.get(`/users/confirm/${confirmationCode.payload}`)
-    yield put(verifyUserSuccess(response.data))
-  } catch (e) {
-    yield put(verifyUserFailure(e))
   }
 }
 
@@ -179,7 +169,6 @@ const userSagas = [
   takeEvery(deleteUserRequest, deleteUserSaga),
   takeEvery(registrationRequest, registrationUserSaga),
   takeEvery(logoutUser, logoutUserSaga),
-  takeEvery(verifyUserRequest, verifyUserSaga),
   takeEvery(forgotPasswordRequest, forgotPasswordSaga),
   takeEvery(resetPasswordRequest, resetPasswordSaga),
 ]

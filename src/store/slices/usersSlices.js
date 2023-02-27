@@ -50,18 +50,6 @@ const usersSlice = createSlice({
       state.deleteLoading = false
       state.deleteError = action.payload
     },
-    verifyUserRequest(state) {
-      state.verifyUserLoading = true
-      state.verifyUserError = null
-    },
-    verifyUserSuccess(state, action) {
-      state.verifyUserLoading = false
-      state.verifyUserError = action.payload
-    },
-    verifyUserFailure(state, action) {
-      state.verifyUserLoading = false
-      state.verifyUserError = action.payload
-    },
     forgotPasswordRequest(state) {
       state.loading = true
       state.forgotPasswordError = null

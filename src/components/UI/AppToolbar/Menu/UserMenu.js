@@ -4,8 +4,8 @@ import {useDispatch} from "react-redux";
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import {logoutUser} from "../../../../store/actions/usersActions";
 import {Link} from "react-router-dom";
+import {logoutUser} from "../../../../store/actions/usersActions";
 
 const UserMenu = ({user}) => {
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ const UserMenu = ({user}) => {
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
-        Hello, {user.username}!
+        Hello, {user.name}!
       </Button>
       <Menu
         id="basic-menu"
@@ -42,7 +42,7 @@ const UserMenu = ({user}) => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose} component={Link} to="/add_new_product">Add new product</MenuItem>
+        <MenuItem onClick={handleClose} component={Link} to="/add_product">Add new product</MenuItem>
         <MenuItem onClick={() => dispatch(logoutUser())}>Logout</MenuItem>
       </Menu>
     </div>

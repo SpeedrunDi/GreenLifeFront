@@ -9,7 +9,8 @@ import UserMenu from "./Menu/UserMenu";
 
 const useStyles = makeStyles()(theme => ({
   appBar: {
-    background: "green"
+    background: "green",
+    zIndex: "20",
   },
   mainLink: {
     fontFamily: 'Baltica',
@@ -33,7 +34,7 @@ const AppToolbar = () => {
     <>
      <AppBar className={classes.appBar} position="fixed">
        <Toolbar>
-         <Grid container justifyContent="space-between" alignItems="center">
+         <Grid container justifyContent="space-between" alignItems="center" maxWidth="lg" marginX="auto">
            <Grid item>
              <Typography variant="h6">
                <Link to="/" className={classes.mainLink}>
