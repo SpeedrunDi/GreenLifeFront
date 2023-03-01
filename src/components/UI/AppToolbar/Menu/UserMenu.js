@@ -42,8 +42,14 @@ const UserMenu = ({user}) => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <MenuItem onClick={handleClose} component={Link} to="/add_product">Add new product</MenuItem>
-        <MenuItem onClick={() => dispatch(logoutUser())}>Logout</MenuItem>
+        {user?.role === 'admin' && (
+          [
+            <MenuItem key="add" onClick={handleClose} component={Link} to="/add_product">Добавить новый
+              товар</MenuItem>,
+            <MenuItem key="order" onClick={handleClose} component={Link} to="/orders">Все заказы</MenuItem>
+          ]
+        )}
+        <MenuItem onClick={() => dispatch(logoutUser())}>Выйти</MenuItem>
       </Menu>
     </div>
   );
