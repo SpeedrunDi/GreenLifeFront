@@ -2,7 +2,8 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {makeStyles} from "tss-react/mui";
-import {AppBar, Grid, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, Grid, Toolbar, Typography} from "@mui/material";
+import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
 import Anonymous from "./Menu/Anonymous";
 import UserMenu from "./Menu/UserMenu";
 
@@ -13,7 +14,7 @@ const useStyles = makeStyles()(theme => ({
     zIndex: "20",
   },
   mainLink: {
-    fontFamily: 'Baltica',
+    fontFamily: 'Life Savers',
     fontSize: '40px',
     color: 'inherit',
     textDecoration: 'none',
@@ -43,7 +44,10 @@ const AppToolbar = () => {
              </Typography>
            </Grid>
 
-           <Grid item>
+           <Grid item display="flex">
+             <Box sx={{margin: "6px 30px 0", color: "inherit"}} component={Link} to="/basket">
+               <ShoppingBasketIcon/>
+             </Box>
              {user ? <UserMenu user={user}/> : <Anonymous/>}
            </Grid>
          </Grid>

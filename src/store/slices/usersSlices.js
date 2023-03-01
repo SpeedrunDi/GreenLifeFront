@@ -1,9 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit'
+import {createSlice} from '@reduxjs/toolkit'
 
 const name = 'users'
 
 export const initialState = {
   user: null,
+  basket: [],
   users: null,
   loading: false,
   error: null,
@@ -74,6 +75,22 @@ const usersSlice = createSlice({
       state.loading = false
       state.resetPasswordError = action.payload
     },
+    selectProduct(state, action) {
+      state.basket = [...state.basket, action.payload]
+    },
+    deleteProduct(state, action) {
+      state.basket = action.payload
+    },
+    countProduct(state, action) {
+      const basket = action.payload
+      let newBasket
+
+      if (basket?.length) {
+        newBasket = basket.filter(product => product.count !== 0)
+      }
+
+      state.basket = newBasket
+    }
   },
 })
 

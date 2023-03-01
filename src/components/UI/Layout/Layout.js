@@ -8,7 +8,7 @@ const Layout = ({children}) => {
       <CssBaseline/>
       <AppToolbar/>
       <main>
-        <Container maxWidth="xl">
+        <Container maxWidth="lg">
           {children}
         </Container>
       </main>

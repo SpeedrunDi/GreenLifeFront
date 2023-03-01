@@ -1,15 +1,22 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import {Card, CardActions, CardContent, CardHeader, CardMedia, Grid, IconButton} from "@mui/material";
+import {useDispatch} from "react-redux";
+import {Button, Card, CardActions, CardContent, CardHeader, CardMedia, Grid, IconButton} from "@mui/material";
 import {ArrowForward} from "@mui/icons-material";
-import imageNotAvailable from '../../assets/image-not-available.jpg';
+import {selectProduct} from "../../store/actions/usersActions";
 import {apiUrl} from "../../config";
+import imageNotAvailable from '../../assets/image-not-available.jpg';
 
-const ProductItem = ({id, title, price, image}) => {
-  let cardImage = imageNotAvailable;
+const ProductItem = ({_id, title, price, image}) => {
+  const dispatch = useDispatch()
+  let cardImage = imageNotAvailable
+
+  const addProduct = () => {
+    dispatch(selectProduct({_id, title, price, image, count: 1}))
+  }
 
   if (image) {
-    cardImage = apiUrl + '/' + image;
+    cardImage = apiUrl + '/' + image
   }
 
   return (
@@ -26,13 +33,16 @@ const ProductItem = ({id, title, price, image}) => {
             Price: {price} KGS
           </strong>
         </CardContent>
-        <CardActions>
-          <IconButton component={Link} to={'/products/' + id}>
-            <ArrowForward />
+        <CardActions sx={{justifyContent: "space-between", paddingX: "20px"}}>
+          <IconButton component={Link} to={'/products/' + _id}>
+            <ArrowForward/>
           </IconButton>
+          <Button onClick={addProduct}>
+            В корзину
+          </Button>
         </CardActions>
       </Card>
     </Grid>
-  );
-};
+  )
+}
 export default ProductItem;

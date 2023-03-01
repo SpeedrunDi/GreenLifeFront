@@ -26,7 +26,7 @@ const Main = () => {
         {products.length !== 0 ? products.map(product => (
           <ProductItem
             key={product._id}
-            id={product._id}
+            _id={product._id}
             title={product.title}
             price={product.price}
             image={product.image}
