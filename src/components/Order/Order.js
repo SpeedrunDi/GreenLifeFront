@@ -3,6 +3,7 @@ import {Box, Button, Typography} from "@mui/material";
 import {makeStyles} from "tss-react/mui";
 import Grid from "@mui/material/Grid";
 import FormElement from "../UI/Form/FormElement/FormElement";
+import {useSelector} from "react-redux";
 
 const useStyles = makeStyles()(() => ({
   orderBlock: {
@@ -20,7 +21,8 @@ const useStyles = makeStyles()(() => ({
 }));
 
 const Order = ({totalPrice, onSendOrder}) => {
-  const { classes } = useStyles();
+  const {classes} = useStyles();
+  const loading = useSelector(state => state.orders.loading)
   const [userData, setUserData] = useState({
     name: '',
     phone: ''
@@ -35,6 +37,11 @@ const Order = ({totalPrice, onSendOrder}) => {
     e.preventDefault()
 
     onSendOrder({name: userData.name, phone: userData.phone, totalPrice})
+
+    setUserData({
+      name: '',
+      phone: ''
+    })
   }
 
   return (
@@ -57,7 +64,7 @@ const Order = ({totalPrice, onSendOrder}) => {
       </Grid>
       <Typography className={classes.title}>Стоимость заказа: {totalPrice} с</Typography>
       <Box style={{textAlign: "center"}}>
-        <Button type="submit" variant="outlined">Подтвердить заказ</Button>
+        <Button type="submit" variant="outlined" disabled={loading}>Подтвердить заказ</Button>
       </Box>
     </Box>
   );

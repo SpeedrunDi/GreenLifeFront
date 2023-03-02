@@ -1,8 +1,7 @@
-import {useState} from "react"
-import {useDispatch} from "react-redux"
-import {Link} from "react-router-dom";
+import React, {useState} from "react"
+import {useDispatch, useSelector} from "react-redux"
+import {Link, Redirect} from "react-router-dom";
 import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
@@ -12,14 +11,21 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import {loginUserRequest} from "../../store/actions/usersActions"
 import FormElement from "../../components/UI/Form/FormElement/FormElement";
+import {LoadingButton} from "@mui/lab";
 
 const Login = () => {
   const dispatch = useDispatch()
+  const user = useSelector(state1 => state1.users.user)
+  const loading = useSelector(state1 => state1.users.loading)
   const [state, setState] = useState({
     email: '',
     password: '',
     remember: true
   })
+
+  if (user) {
+    return <Redirect to="/"/>
+  }
 
   const inputChangeHandler = (e) => {
     const {name, value} = e.target
@@ -79,14 +85,15 @@ const Login = () => {
             />}
             label="Запомнить данные"
           />
-          <Button
+          <LoadingButton
             type="submit"
             fullWidth
             variant="contained"
             sx={{mt: 3, mb: 2}}
+            loading={loading}
           >
             Войти
-          </Button>
+          </LoadingButton>
           <Grid container>
             <Grid item xs>
               <Link to="/">

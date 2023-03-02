@@ -93,6 +93,7 @@ export function* deleteProductSaga({payload: id}) {
   try {
     yield axiosApi.delete(`/products/${id}`)
     yield put(deleteProductSuccess())
+    yield put(fetchProductsRequest())
     yield Toast.fire({
       icon: 'success',
       title: `Товар успешно удалён!`,

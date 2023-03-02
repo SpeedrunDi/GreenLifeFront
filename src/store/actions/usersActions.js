@@ -11,13 +11,8 @@ export const {
   deleteUserRequest,
   deleteUserSuccess,
   deleteUserFailure,
-  forgotPasswordRequest,
-  forgotPasswordSuccess,
-  forgotPasswordFailure,
-  resetPasswordRequest,
-  resetPasswordSuccess,
-  resetPasswordFailure,
   selectProduct,
   deleteProduct,
-  countProduct
+  countProduct,
+  clearBasket
 } = usersSlice.actions

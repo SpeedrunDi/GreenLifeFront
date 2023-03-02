@@ -39,8 +39,13 @@ export function* createOrderSaga({payload: orderData}) {
     yield axiosApi.post(`/orders`, orderData)
     yield put(createOrderSuccess())
     yield Toast.fire({
+      toast: false,
       icon: 'success',
       title: `Заказ успешно отправлен!`,
+      position: "center",
+      showConfirmButton: true,
+      timer: 10000,
+      confirmButtonText: "Закрыть"
     })
   } catch (e) {
     yield put(createOrderFailure())

@@ -12,9 +12,9 @@ import {
   IconButton,
   Typography
 } from "@mui/material";
-import {ArrowForward} from "@mui/icons-material";
+import {ArrowForward, Delete} from "@mui/icons-material";
 import {selectProduct} from "../../store/actions/usersActions";
-import {changeStockProductRequest} from "../../store/actions/productsActions";
+import {changeStockProductRequest, deleteProductRequest} from "../../store/actions/productsActions";
 import {apiUrl} from "../../config";
 import imageNotAvailable from '../../assets/image-not-available.jpg';
 
@@ -31,14 +31,25 @@ const ProductItem = ({_id, title, price, image, disabled, stock}) => {
     dispatch(changeStockProductRequest(_id))
   }
 
+  const onDeleteProduct = () => {
+    dispatch(deleteProductRequest(_id))
+  }
+
   if (image) {
     cardImage = apiUrl + '/' + image
   }
 
   return (
     <Grid item xs={12} sm={6} lg={3}>
-      <Card sx={{height: '100%', boxShadow: "6", border: "5px solid rgba(66,227,116,0.7)", borderRadius: "10px"}}>
-        <CardHeader title={title}/>
+      <Card sx={{
+        height: '100%',
+        boxShadow: "6",
+        border: "5px solid rgba(66,227,116,0.7)",
+        borderRadius: "10px",
+        display: "flex",
+        flexDirection: "column"
+      }}>
+        <CardHeader title={title} sx={{marginBottom: "auto"}}/>
         <CardMedia
           title={title}
           image={cardImage}
@@ -68,9 +79,14 @@ const ProductItem = ({_id, title, price, image, disabled, stock}) => {
               </Typography>
             )
           ) : (
-            <Button onClick={onStockProduct} color={stock ? "error" : "success"}>
-              {stock ? 'Отключить' : 'Включить'}
-            </Button>
+            <>
+              <IconButton onClick={onDeleteProduct}>
+                <Delete/>
+              </IconButton>
+              <Button onClick={onStockProduct} color={stock ? "error" : "success"}>
+                {stock ? 'Отключить' : 'Включить'}
+              </Button>
+            </>
           )
           }
         </CardActions>

@@ -4,12 +4,10 @@ import Swal from 'sweetalert2'
 import axiosApi from '../../axiosApi'
 import {historyPush} from '../actions/historyActions'
 import {
+  clearBasket,
   deleteUserFailure,
   deleteUserRequest,
   deleteUserSuccess,
-  forgotPasswordFailure,
-  forgotPasswordRequest,
-  forgotPasswordSuccess,
   loginUserFailure,
   loginUserRequest,
   loginUserSuccess,
@@ -17,9 +15,6 @@ import {
   registrationFailure,
   registrationRequest,
   registrationSuccess,
-  resetPasswordFailure,
-  resetPasswordRequest,
-  resetPasswordSuccess,
 } from '../actions/usersActions'
 
 const Toast = Swal.mixin({
@@ -38,8 +33,13 @@ const Toast = Swal.mixin({
 
 export function* registrationUserSaga({payload: userData}) {
   try {
+    Cookies.remove('greenlife')
     const response = yield axiosApi.post('/users', userData)
     yield put(registrationSuccess(response.data))
+    if (response.data) {
+      yield put(historyPush('/login'))
+    }
+    yield put(clearBasket())
     yield Toast.fire({
       icon: 'success',
       title: `Вы успешно зарегистрировались!`,
@@ -49,7 +49,7 @@ export function* registrationUserSaga({payload: userData}) {
       yield put(registrationFailure(e.response.data))
       yield Toast.fire({
         icon: 'error',
-        title: 'Данный пользователь уже зарегистрирован',
+        title: 'Что то пошло не так!',
       })
     }
   }
@@ -57,19 +57,23 @@ export function* registrationUserSaga({payload: userData}) {
 
 export function* loginUserSaga({payload: userData}) {
   try {
-    let response
     if (!userData) {
-      response = yield axiosApi.post(`/users/sessions`)
+      let response = yield axiosApi.post(`/users/sessions`)
+
+      yield put(loginUserSuccess(response.data))
     }
     if (userData) {
       Cookies.remove('greenlife')
-      response = yield axiosApi.post(`/users/sessions`, userData)
+      let response = yield axiosApi.post(`/users/sessions`, userData)
+
+      yield put(loginUserSuccess(response.data))
 
       if (response.data) {
         yield put(historyPush('/'))
       }
     }
-    yield put(loginUserSuccess(response.data))
+
+    yield put(clearBasket())
     yield Toast.fire({
       icon: 'success',
       title: 'Вы успешно вошли в свой аккаунт',
@@ -88,6 +92,8 @@ export function* loginUserSaga({payload: userData}) {
 export function* logoutUserSaga() {
   try {
     yield axiosApi.delete('users/sessions')
+
+    yield put(clearBasket())
 
     yield put(historyPush('/'))
     yield Cookies.remove('greenlife')
@@ -117,60 +123,11 @@ export function* deleteUserSaga({payload: id}) {
   }
 }
 
-export function* forgotPasswordSaga({payload: userData}) {
-  try {
-    const response = yield axiosApi.post('/users/forgot', userData)
-    yield put(forgotPasswordSuccess(response.data))
-    yield Toast.fire({
-      icon: 'info',
-      title: response.data.message,
-    })
-  } catch (e) {
-    yield put(forgotPasswordFailure(e))
-  }
-}
-
-export function* resetPasswordSaga({payload: hash}) {
-  try {
-    const response = yield axiosApi.post(`/users/reset/`, {hash})
-    yield put(resetPasswordSuccess(response.data))
-    yield Toast.fire({
-      icon: 'success',
-      title: 'Пароль успешно сменён',
-    })
-  } catch (e) {
-    yield put(resetPasswordFailure(e))
-  }
-}
-
-// export function* editUserPasswordSaga({payload: passwords}) {
-//   try {
-//     yield axiosApi.put('/users/edit_password', {password: passwords.password, newPassword: passwords.newPassword})
-//     yield put(passwordSuccess())
-//     yield put(hideLoading())
-//     yield Toast.fire({
-//       icon: 'success',
-//       title: 'Пароль успешно изменен',
-//     })
-//   } catch (e) {
-//     if (e.response && e.response.data) {
-//       yield put(passwordFailure(e.response.data))
-//       yield Toast.fire({
-//         icon: 'error',
-//         title: e.response.data.error,
-//       })
-//     }
-//     yield put(hideLoading())
-//   }
-// }
-
 const userSagas = [
   takeEvery(loginUserRequest, loginUserSaga),
   takeEvery(deleteUserRequest, deleteUserSaga),
   takeEvery(registrationRequest, registrationUserSaga),
   takeEvery(logoutUser, logoutUserSaga),
-  takeEvery(forgotPasswordRequest, forgotPasswordSaga),
-  takeEvery(resetPasswordRequest, resetPasswordSaga),
 ]
 
 export default userSagas

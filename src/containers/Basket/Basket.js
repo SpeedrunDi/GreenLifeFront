@@ -145,7 +145,7 @@ const Basket = () => {
       </TableContainer>
       <Order totalPrice={total} onSendOrder={sendOrder}/>
     </>
-  ) : <Typography fontSize="40px" textAlign="center">Карзинка пуста</Typography>;
+  ) : <Typography fontSize="40px" textAlign="center">Корзина пуста</Typography>;
 };
 
 export default Basket;

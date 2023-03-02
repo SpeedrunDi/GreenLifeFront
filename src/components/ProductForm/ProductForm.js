@@ -1,9 +1,22 @@
 import React, {useState} from 'react';
-import {Button, Grid} from "@mui/material";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  Grid,
+  IconButton,
+} from "@mui/material";
 import FileInput from "../UI/Form/FileInput/FileInput";
 import FormElement from "../UI/Form/FormElement/FormElement";
+import {LoadingButton} from "@mui/lab";
+import {useSelector} from "react-redux";
+import {ArrowForward} from "@mui/icons-material";
 
 const ProductForm = ({onSubmit, error}) => {
+  const loading = useSelector(state => state.products.loading)
   const [newProduct, setNewProduct] = useState({
     title: "",
     price: "",
@@ -53,58 +66,91 @@ const ProductForm = ({onSubmit, error}) => {
   };
 
   return (
-    <form
-      autoComplete="off"
-      onSubmit={submitFormHandler}
-    >
-      <Grid
-        container
-        maxWidth="md"
-        textAlign="center"
-        marginX="auto"
-        direction="column"
-        rowSpacing={3}
+    <>
+      <form
+        autoComplete="off"
+        onSubmit={submitFormHandler}
       >
-        <FormElement
-          required={true}
-          onChange={inputChangeHandler}
-          name="title"
-          label="Title"
-          value={newProduct.title}
-          error={getFieldError('title')}
-        />
-
-        <FormElement
-          required={true}
-          onChange={inputChangeHandler}
-          type="number"
-          name="price"
-          label="Price"
-          value={newProduct.price}
-          error={getFieldError('price')}
-        />
-
-        <FormElement
-          onChange={inputChangeHandler}
-          name="description"
-          label="Description"
-          value={newProduct.description}
-          error={getFieldError('description')}
-        />
-
-        <Grid item>
-          <FileInput
-            label="Image"
-            name="image"
-            onChange={fileChangeHandler}
+        <Grid
+          container
+          maxWidth="md"
+          textAlign="center"
+          marginX="auto"
+          direction="column"
+          rowSpacing={3}
+        >
+          <FormElement
+            required={true}
+            onChange={inputChangeHandler}
+            name="title"
+            label="Title"
+            value={newProduct.title}
+            error={getFieldError('title')}
           />
-        </Grid>
 
-        <Grid item>
-          <Button type="submit" variant="contained">Создать</Button>
+          <FormElement
+            required={true}
+            onChange={inputChangeHandler}
+            type="number"
+            name="price"
+            label="Price"
+            value={newProduct.price}
+            error={getFieldError('price')}
+          />
+
+          <FormElement
+            onChange={inputChangeHandler}
+            name="description"
+            label="Description"
+            value={newProduct.description}
+            error={getFieldError('description')}
+          />
+
+          <Grid item>
+            <FileInput
+              label="Image"
+              name="image"
+              image={newProduct.image}
+              onChange={fileChangeHandler}
+            />
+          </Grid>
+
+          <Grid item>
+            <LoadingButton type="submit" variant="contained" loading={loading}>Создать</LoadingButton>
+          </Grid>
         </Grid>
-      </Grid>
-    </form>
+      </form>
+      {newProduct.image && (
+        <Grid maxWidth="600px" textAlign="left" padding="100px" marginX="auto">
+          <Card sx={{
+            height: '100%',
+            boxShadow: "6",
+            border: "5px solid rgba(66,227,116,0.7)",
+            borderRadius: "10px"
+          }}>
+            <CardHeader title={newProduct.title}/>
+            <CardMedia
+              title={newProduct.title}
+              image={URL.createObjectURL(newProduct.image)}
+              sx={{paddingTop: '56.25%', height: 0}}
+            />
+            <CardContent>
+              <strong>
+                Price: {newProduct.price} KGS
+              </strong>
+            </CardContent>
+            <CardActions sx={{justifyContent: "space-between", paddingX: "20px"}}>
+              <IconButton>
+                <ArrowForward/>
+              </IconButton>
+              <Button>
+                В корзину
+              </Button>
+            </CardActions>
+          </Card>
+        </Grid>
+      )}
+    </>
   );
 };
 

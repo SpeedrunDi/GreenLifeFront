@@ -1,38 +1,53 @@
 import React, {useState} from 'react'
 import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
 import Grid from '@mui/material/Grid'
 import Box from '@mui/material/Box'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 import Typography from '@mui/material/Typography'
 import {registrationRequest} from "../../store/actions/usersActions";
-import {useDispatch} from "react-redux";
-import {Link} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {Link, Redirect} from "react-router-dom";
 import FormElement from "../../components/UI/Form/FormElement/FormElement";
+import {LoadingButton} from "@mui/lab";
 
 const Register = () => {
   const dispatch = useDispatch()
+  const user = useSelector(state1 => state1.users.user)
+  const error = useSelector(state1 => state1.users.error)
+  const loading = useSelector(state1 => state1.users.loading)
   const [state, setState] = useState({
     name: '',
     email: '',
     password: '',
   })
 
+  if (user) {
+    return <Redirect to="/"/>
+  }
+
   const inputChangeHandler = (e) => {
-    const { name, value } = e.target
-    setState(prev => ({ ...prev, [name]: value }))
+    const {name, value} = e.target
+    setState(prev => ({...prev, [name]: value}))
   }
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    dispatch(registrationRequest({ ...state }))
+    dispatch(registrationRequest({...state}))
   }
+
+  const getFieldError = fieldName => {
+    try {
+      return error.errors[fieldName].message;
+    } catch {
+      return undefined;
+    }
+  };
 
   return (
     <>
-      <CssBaseline />
+      <CssBaseline/>
       <Box
         sx={{
           marginTop: 8,
@@ -55,6 +70,7 @@ const Register = () => {
                          label="Имя"
                          required
                          type="text"
+                         error={getFieldError('name')}
             />
             <FormElement onChange={inputChangeHandler}
                          value={state.email}
@@ -62,6 +78,7 @@ const Register = () => {
                          label="Электронная почта"
                          required
                          type="email"
+                         error={getFieldError('email')}
             />
             <FormElement onChange={inputChangeHandler}
                          value={state.password}
@@ -69,16 +86,18 @@ const Register = () => {
                          label="Пароль"
                          required
                          type="password"
+                         error={getFieldError('password')}
             />
           </Grid>
-          <Button
+          <LoadingButton
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{mt: 3, mb: 2}}
+            loading={loading}
           >
             Зарегистрироваться
-          </Button>
+          </LoadingButton>
           <Grid container justifyContent="flex-end">
             <Grid item>
               <Link to="/login">

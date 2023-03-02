@@ -8,7 +8,7 @@ const useStyles = makeStyles()(() => ({
   }
 }));
 
-const FileInput = ({onChange, name, label}) => {
+const FileInput = ({onChange, name, label, image}) => {
   const {classes} = useStyles();
   const inputRef = useRef();
 
@@ -42,12 +42,12 @@ const FileInput = ({onChange, name, label}) => {
           <TextField
             disabled
             label={label}
-            value={filename}
+            value={image ? filename : ''}
             onClick={activateInput}
           />
         </Grid>
         <Grid item>
-          <Button variant="contained" onClick={activateInput}>Browse</Button>
+          <Button variant="contained" onClick={activateInput}>Выбрать</Button>
         </Grid>
       </Grid>
     </>

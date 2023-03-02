@@ -51,30 +51,6 @@ const usersSlice = createSlice({
       state.deleteLoading = false
       state.deleteError = action.payload
     },
-    forgotPasswordRequest(state) {
-      state.loading = true
-      state.forgotPasswordError = null
-    },
-    forgotPasswordSuccess(state, action) {
-      state.loading = false
-      state.forgotPasswordError = action.payload
-    },
-    forgotPasswordFailure(state, action) {
-      state.loading = false
-      state.forgotPasswordError = action.payload
-    },
-    resetPasswordRequest(state) {
-      state.loading = true
-      state.resetPasswordError = null
-    },
-    resetPasswordSuccess(state, action) {
-      state.loading = false
-      state.resetPasswordError = action.payload
-    },
-    resetPasswordFailure(state, action) {
-      state.loading = false
-      state.resetPasswordError = action.payload
-    },
     selectProduct(state, action) {
       state.basket = [...state.basket, action.payload]
     },
@@ -90,6 +66,9 @@ const usersSlice = createSlice({
       }
 
       state.basket = newBasket
+    },
+    clearBasket(state) {
+      state.basket = []
     }
   },
 })
