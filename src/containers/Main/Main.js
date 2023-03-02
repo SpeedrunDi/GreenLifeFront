@@ -8,6 +8,7 @@ const Main = () => {
   const dispatch = useDispatch();
   const loading = useSelector(state => state.products.loading);
   const products = useSelector(state => state.products.products);
+  const basket = useSelector(state => state.users.basket)
 
   useEffect(() => {
     dispatch(fetchProductsRequest());
@@ -23,15 +24,27 @@ const Main = () => {
         </Grid>
       </Grid>
       <Grid item container spacing={3}>
-        {products.length !== 0 ? products.map(product => (
-          <ProductItem
-            key={product._id}
-            _id={product._id}
-            title={product.title}
-            price={product.price}
-            image={product.image}
-          />
-        )) : <Typography variant="h3" margin="30px 0 0 10%">No products</Typography>}
+        {products.length !== 0 ? products.map(product => {
+          let disabled = false
+
+          if (basket?.length) {
+            basket.forEach(item => {
+              if (item._id === product._id) disabled = true
+            })
+          }
+
+          return (
+            <ProductItem
+              key={product._id}
+              _id={product._id}
+              title={product.title}
+              price={product.price}
+              image={product.image}
+              stock={product.stock}
+              disabled={disabled}
+            />
+          )
+        }) : <Typography variant="h3" margin="30px 0 0 10%">No products</Typography>}
       </Grid>
     </Grid>
   );

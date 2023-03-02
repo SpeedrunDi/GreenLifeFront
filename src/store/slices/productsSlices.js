@@ -41,6 +41,15 @@ const productsSlice = createSlice({
     createProductFailure(state) {
       state.loading = false
     },
+    changeStockProductRequest(state) {
+      state.loading = true
+    },
+    changeStockProductSuccess(state) {
+      state.loading = false
+    },
+    changeStockProductFailure(state) {
+      state.loading = false
+    },
     deleteProductRequest(state) {
       state.loading = true
     },

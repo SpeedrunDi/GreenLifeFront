@@ -1,18 +1,34 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {Button, Card, CardActions, CardContent, CardHeader, CardMedia, Grid, IconButton} from "@mui/material";
+import {useDispatch, useSelector} from "react-redux";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  Grid,
+  IconButton,
+  Typography
+} from "@mui/material";
 import {ArrowForward} from "@mui/icons-material";
 import {selectProduct} from "../../store/actions/usersActions";
+import {changeStockProductRequest} from "../../store/actions/productsActions";
 import {apiUrl} from "../../config";
 import imageNotAvailable from '../../assets/image-not-available.jpg';
 
-const ProductItem = ({_id, title, price, image}) => {
+const ProductItem = ({_id, title, price, image, disabled, stock}) => {
   const dispatch = useDispatch()
+  const user = useSelector(state => state.users.user)
   let cardImage = imageNotAvailable
 
   const addProduct = () => {
     dispatch(selectProduct({_id, title, price, image, count: 1}))
+  }
+
+  const onStockProduct = () => {
+    dispatch(changeStockProductRequest(_id))
   }
 
   if (image) {
@@ -37,9 +53,26 @@ const ProductItem = ({_id, title, price, image}) => {
           <IconButton component={Link} to={'/products/' + _id}>
             <ArrowForward/>
           </IconButton>
-          <Button onClick={addProduct}>
-            В корзину
-          </Button>
+          {user?.role !== 'admin' ? (
+            stock ? (
+              disabled ?
+                <Typography variant="span" fontWeight="700" color="red">
+                  Товар в корзине
+                </Typography> :
+                <Button onClick={addProduct}>
+                  В корзину
+                </Button>
+            ) : (
+              <Typography variant="span" fontWeight="700" color="red">
+                Нету в наличии
+              </Typography>
+            )
+          ) : (
+            <Button onClick={onStockProduct} color={stock ? "error" : "success"}>
+              {stock ? 'Отключить' : 'Включить'}
+            </Button>
+          )
+          }
         </CardActions>
       </Card>
     </Grid>

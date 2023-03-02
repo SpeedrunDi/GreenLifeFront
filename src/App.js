@@ -9,8 +9,6 @@ import Layout from "./components/UI/Layout/Layout"
 import AddProduct from "./containers/AddProduct/AddProduct"
 import Basket from "./containers/Basket/Basket";
 import Orders from "./containers/Orders/Orders";
-// import ForgotPasswordPage from './containers/ForgotPasswordPage/ForgotPasswordPage'
-// import ResetPasswordPage from './containers/ResetPasswordPage/ResetPasswordPage'
 
 const App = () => {
   return (
@@ -23,8 +21,6 @@ const App = () => {
           <Route path="/basket" component={Basket}/>
           {Cookies.get('greenlife') ? <Route path="/add_product" component={AddProduct}/> : <Redirect to="/"/>}
           {Cookies.get('greenlife') ? <Route path="/orders" component={Orders}/> : <Redirect to="/"/>}
-          {/*<Route path="/forgot" component={ForgotPasswordPage}/>*/}
-          {/*<Route path="/reset/:hash" component={ResetPasswordPage}/>*/}
         </Switch>
       </Layout>
     </CookieProvider>

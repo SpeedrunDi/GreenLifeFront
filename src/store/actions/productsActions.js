@@ -12,5 +12,8 @@ export const {
   createProductFailure,
   deleteProductRequest,
   deleteProductSuccess,
-  deleteProductFailure
+  deleteProductFailure,
+  changeStockProductRequest,
+  changeStockProductSuccess,
+  changeStockProductFailure
 } = productsSlice.actions

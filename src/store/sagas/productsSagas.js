@@ -14,7 +14,7 @@ import {
   createProductFailure,
   deleteProductRequest,
   deleteProductSuccess,
-  deleteProductFailure
+  deleteProductFailure, changeStockProductSuccess, changeStockProductFailure, changeStockProductRequest
 } from '../actions/productsActions'
 
 const Toast = Swal.mixin({
@@ -71,6 +71,24 @@ export function* createProductSaga({payload: productData}) {
   }
 }
 
+export function* changeStockProductSaga({payload: id}) {
+  try {
+    yield axiosApi.patch(`/products/${id}`)
+    yield put(changeStockProductSuccess())
+    yield put(fetchProductsRequest())
+    yield Toast.fire({
+      icon: 'success',
+      title: `Товар успешно изменён!`,
+    })
+  } catch (e) {
+    yield put(changeStockProductFailure())
+    yield Toast.fire({
+      icon: 'error',
+      title: `Что то пошло не так!`,
+    })
+  }
+}
+
 export function* deleteProductSaga({payload: id}) {
   try {
     yield axiosApi.delete(`/products/${id}`)
@@ -92,7 +110,8 @@ const productSagas = [
   takeEvery(fetchProductRequest, fetchProductSaga),
   takeEvery(fetchProductsRequest, fetchProductsSaga),
   takeEvery(createProductRequest, createProductSaga),
-  takeEvery(deleteProductRequest, deleteProductSaga)
+  takeEvery(deleteProductRequest, deleteProductSaga),
+  takeEvery(changeStockProductRequest, changeStockProductSaga),
 ]
 
 export default productSagas

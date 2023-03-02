@@ -2,15 +2,15 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import {Button, Typography} from "@mui/material";
 
-const Anonymous = () => {
+const Anonymous = ({link}) => {
   return (
     <>
-      <Button component={Link} to="/register" color="inherit">
-        Зарегистрироваться
+      <Button className={link} component={Link} to="/register" color="inherit">
+        Регистрация
       </Button>
-      <Typography variant="span" paddingX="5px">or</Typography>
-      <Button component={Link} to="/login" color="inherit">
-        Войти
+      <Typography variant="span" padding="13px 5px 0px">/</Typography>
+      <Button className={link} component={Link} to="/login" color="inherit">
+        Вход
       </Button>
     </>
   );

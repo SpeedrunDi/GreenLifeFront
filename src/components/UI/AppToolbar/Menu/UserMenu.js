@@ -7,7 +7,7 @@ import MenuItem from '@mui/material/MenuItem';
 import {Link} from "react-router-dom";
 import {logoutUser} from "../../../../store/actions/usersActions";
 
-const UserMenu = ({user}) => {
+const UserMenu = ({user, link}) => {
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -24,12 +24,14 @@ const UserMenu = ({user}) => {
   return (
     <div>
       <Button
+        className={link}
         id="basic-button"
         color="inherit"
         aria-controls={open ? 'basic-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
+        sx={{marginTop: "7px"}}
       >
         {user.name}
       </Button>

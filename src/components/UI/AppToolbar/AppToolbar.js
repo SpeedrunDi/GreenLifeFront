@@ -2,10 +2,10 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {makeStyles} from "tss-react/mui";
-import {AppBar, Box, Grid, Toolbar, Typography} from "@mui/material";
-import ShoppingBasketIcon from "@mui/icons-material/ShoppingBasket";
+import {AppBar, Grid, Toolbar, Typography} from "@mui/material";
 import Anonymous from "./Menu/Anonymous";
 import UserMenu from "./Menu/UserMenu";
+import BasketIcon from "./BasketIcon/BasketIcon";
 
 
 const useStyles = makeStyles()(theme => ({
@@ -25,6 +25,13 @@ const useStyles = makeStyles()(theme => ({
   staticToolbar: {
     marginBottom: theme.spacing(2)
   },
+  link: {
+    fontFamily: 'Life Savers',
+    color: 'white',
+    '&:hover': {
+      color: '#71ff25'
+    },
+  }
 }));
 
 const AppToolbar = () => {
@@ -45,10 +52,8 @@ const AppToolbar = () => {
            </Grid>
 
            <Grid item display="flex">
-             <Box sx={{margin: "6px 30px 0", color: "inherit"}} component={Link} to="/basket">
-               <ShoppingBasketIcon/>
-             </Box>
-             {user ? <UserMenu user={user}/> : <Anonymous/>}
+             <BasketIcon/>
+             {user ? <UserMenu user={user} link={classes.link}/> : <Anonymous link={classes.link}/>}
            </Grid>
          </Grid>
        </Toolbar>
