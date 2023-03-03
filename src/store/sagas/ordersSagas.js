@@ -9,6 +9,7 @@ import {
   getOrdersRequest,
   getOrdersSuccess
 } from "../actions/ordersActions";
+import {clearBasket} from "../actions/usersActions";
 
 const Toast = Swal.mixin({
   toast: true,
@@ -38,13 +39,14 @@ export function* createOrderSaga({payload: orderData}) {
   try {
     yield axiosApi.post(`/orders`, orderData)
     yield put(createOrderSuccess())
+    yield put(clearBasket())
     yield Toast.fire({
       toast: false,
       icon: 'success',
       title: `Заказ успешно отправлен!`,
       position: "center",
       showConfirmButton: true,
-      timer: 10000,
+      timer: 120000,
       confirmButtonText: "Закрыть"
     })
   } catch (e) {

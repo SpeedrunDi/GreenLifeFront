@@ -39,14 +39,14 @@ const Orders = () => {
   const orders = useSelector(state => state.orders.orders)
 
   useEffect(() => {
-    dispatch(getOrdersRequest())
-  }, [dispatch])
+    if (user) dispatch(getOrdersRequest())
+  }, [dispatch, user])
 
-  if (user && user.role !== 'admin') {
+  if (!user) {
     return <Redirect to="/"/>
   }
 
-  return orders?.length && (
+  return orders?.length !== 0 ? (
     <TableContainer
       sx={{
         marginBottom: "60px",
@@ -54,13 +54,15 @@ const Orders = () => {
         boxShadow: "10px 10px 40px rgba(0, 0, 0, 0.4)"
       }}
     >
-      <Table sx={{minWidth: 650}} aria-label="simple table">
+      <Table sx={{minWidth: {xs: "300px", sm: "500px"}}} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell className={classes.title}>Имя клиента</TableCell>
-            <TableCell className={classes.title} sx={{width: "250px"}}>Номер телефона</TableCell>
-            <TableCell className={classes.title} sx={{minWidth: "250px"}} >Товары</TableCell>
-            <TableCell className={classes.title}>Общая стоимость</TableCell>
+            <TableCell className={classes.title} sx={{display: {xs: "none", md: "table-cell"}}}>Имя
+              клиента</TableCell>
+            <TableCell className={classes.title} sx={{width: "250px", display: {xs: "none", md: "table-cell"}}}>Номер
+              телефона</TableCell>
+            <TableCell className={classes.title}>Товары</TableCell>
+            <TableCell className={classes.title} sx={{textAlign: "center"}}>Общая стоимость</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -69,18 +71,19 @@ const Orders = () => {
               key={item._id}
               sx={{'&:last-child td, &:last-child th': {border: 0}}}
             >
-              <TableCell>
+              <TableCell sx={{display: {xs: "none", md: "table-cell"}}}>
                 <Typography>
                   {item.clientName}
                 </Typography>
               </TableCell>
-              <TableCell>
+              <TableCell sx={{display: {xs: "none", md: "table-cell"}}}>
                 <Typography>
                   {item.phone}
                 </Typography>
               </TableCell>
               <TableCell>
-                <Box sx={{display: "flex", flexDirection: "column", justifyContent: "space-around", alignItems: "center"}}>
+                <Box
+                  sx={{display: "flex", flexDirection: "column", justifyContent: "space-around", alignItems: "center"}}>
                   {item.products?.length && item.products.map(product => (
                     <Typography
                       key={product._id?._id}
@@ -106,7 +109,14 @@ const Orders = () => {
         </TableBody>
       </Table>
     </TableContainer>
-  );
+  ) : (
+    <Typography
+      fontSize="40px"
+      textAlign="center"
+    >
+      История заказов нету
+    </Typography>
+  )
 };
 
 export default Orders;

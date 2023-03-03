@@ -44,13 +44,13 @@ const UserMenu = ({user, link}) => {
           'aria-labelledby': 'basic-button',
         }}
       >
-        {user?.role === 'admin' && (
+        {user?.role === 'admin' ? (
           [
             <MenuItem key="add" onClick={handleClose} component={Link} to="/add_product">Добавить новый
               товар</MenuItem>,
             <MenuItem key="order" onClick={handleClose} component={Link} to="/orders">Все заказы</MenuItem>
           ]
-        )}
+        ) : <MenuItem onClick={handleClose} component={Link} to="/orders">Мои заказы</MenuItem>}
         <MenuItem onClick={() => dispatch(logoutUser())}>Выйти</MenuItem>
       </Menu>
     </div>

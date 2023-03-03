@@ -16,8 +16,8 @@ import {makeStyles} from "tss-react/mui";
 import {countProduct, deleteProduct} from "../../store/actions/usersActions";
 import {apiUrl} from "../../config";
 import Order from "../../components/Order/Order";
-import imageNotAvailable from "../../assets/image-not-available.jpg";
 import {createOrderRequest} from "../../store/actions/ordersActions";
+import imageNotAvailable from "../../assets/image-not-available.jpg";
 
 const useStyles = makeStyles()(() => ({
   title: {

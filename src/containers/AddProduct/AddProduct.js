@@ -18,7 +18,7 @@ const AddProduct = () => {
     dispatch(createProductRequest(productData));
   };
 
-  return (
+  return user && (
     <>
       <Typography
         textAlign="center"

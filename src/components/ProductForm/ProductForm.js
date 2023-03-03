@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardMedia,
   Grid,
-  IconButton,
+  IconButton, TextareaAutosize,
 } from "@mui/material";
 import FileInput from "../UI/Form/FileInput/FileInput";
 import FormElement from "../UI/Form/FormElement/FormElement";
@@ -98,12 +98,20 @@ const ProductForm = ({onSubmit, error}) => {
             error={getFieldError('price')}
           />
 
-          <FormElement
-            onChange={inputChangeHandler}
+          <TextareaAutosize
             name="description"
-            label="Description"
+            placeholder="Описание продукта"
             value={newProduct.description}
-            error={getFieldError('description')}
+            onChange={inputChangeHandler}
+            minRows={3}
+            style={{
+              maxWidth: "900px",
+              marginTop: "24px",
+              borderRadius: "4px",
+              borderColor: "#c5c5c5",
+              padding: "16.5px 14px",
+              fontSize: "16px"
+            }}
           />
 
           <Grid item>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Box, Button, Typography} from "@mui/material";
 import {makeStyles} from "tss-react/mui";
 import Grid from "@mui/material/Grid";
@@ -23,10 +23,20 @@ const useStyles = makeStyles()(() => ({
 const Order = ({totalPrice, onSendOrder}) => {
   const {classes} = useStyles();
   const loading = useSelector(state => state.orders.loading)
+  const user = useSelector(state => state.users.user)
   const [userData, setUserData] = useState({
     name: '',
     phone: ''
   })
+
+  useEffect(() => {
+    if (user) {
+      setUserData({
+        name: user.name,
+        phone: ""
+      })
+    }
+  }, [user])
 
   const inputChangeHandler = (e) => {
     const {name, value} = e.target
