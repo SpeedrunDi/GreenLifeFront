@@ -28,11 +28,11 @@ const ProductItem = ({_id, title, price, image, disabled, stock}) => {
   }
 
   const onStockProduct = () => {
-    dispatch(changeStockProductRequest(_id))
+    dispatch(changeStockProductRequest({_id, token: user.token}))
   }
 
   const onDeleteProduct = () => {
-    dispatch(deleteProductRequest(_id))
+    dispatch(deleteProductRequest({_id, token: user.token}))
   }
 
   if (image) {

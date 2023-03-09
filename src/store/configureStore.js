@@ -1,5 +1,5 @@
 import createSagaMiddleware from 'redux-saga'
-import { configureStore } from '@reduxjs/toolkit'
+import {configureStore} from '@reduxjs/toolkit'
 import axiosApi from '../axiosApi'
 import rootReducer from './rootReducer'
 import rootSagas from './rootSagas'
@@ -13,16 +13,6 @@ const store = configureStore({
 })
 
 sagaMiddleware.run(rootSagas)
-
-axiosApi.interceptors.request.use(config => {
-  try {
-    config.headers.Authorization = store.getState().users.user.user.token
-  } catch (e) {}
-
-  return config
-})
-
-axiosApi.defaults.withCredentials = true
 
 axiosApi.interceptors.response.use(
   res => res,

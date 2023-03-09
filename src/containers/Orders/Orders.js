@@ -39,7 +39,7 @@ const Orders = () => {
   const orders = useSelector(state => state.orders.orders)
 
   useEffect(() => {
-    if (user) dispatch(getOrdersRequest())
+    if (user) dispatch(getOrdersRequest(user.token))
   }, [dispatch, user])
 
   if (!user) {

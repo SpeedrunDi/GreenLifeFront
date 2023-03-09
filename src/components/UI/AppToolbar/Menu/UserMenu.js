@@ -51,7 +51,7 @@ const UserMenu = ({user, link}) => {
             <MenuItem key="order" onClick={handleClose} component={Link} to="/orders">Все заказы</MenuItem>
           ]
         ) : <MenuItem onClick={handleClose} component={Link} to="/orders">Мои заказы</MenuItem>}
-        <MenuItem onClick={() => dispatch(logoutUser())}>Выйти</MenuItem>
+        <MenuItem onClick={() => dispatch(logoutUser(user.token))}>Выйти</MenuItem>
       </Menu>
     </div>
   );

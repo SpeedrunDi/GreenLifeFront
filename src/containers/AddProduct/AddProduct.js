@@ -15,7 +15,7 @@ const AddProduct = () => {
   }
 
   const onProductFormSubmit = productData => {
-    dispatch(createProductRequest(productData));
+    dispatch(createProductRequest({productData, token: user.token}));
   };
 
   return user && (

@@ -1,6 +1,6 @@
 import axiosApi from "../../axiosApi";
 import Swal from "sweetalert2";
-import {put, takeEvery} from 'redux-saga/effects'
+import {put, takeEvery} from 'redux-saga/effects';
 import {
   createOrderFailure,
   createOrderRequest,
@@ -22,9 +22,9 @@ const Toast = Swal.mixin({
   position: "top-end",
 })
 
-export function* getOrdersSaga() {
+export function* getOrdersSaga({payload: token}) {
   try {
-    const response = yield axiosApi.get(`/orders`)
+    const response = yield axiosApi.get(`/orders?token=${token}`)
     yield put(getOrdersSuccess(response.data))
   } catch (e) {
     yield put(getOrdersFailure())

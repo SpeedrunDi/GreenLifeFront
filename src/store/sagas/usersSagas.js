@@ -5,9 +5,7 @@ import axiosApi from '../../axiosApi'
 import {historyPush} from '../actions/historyActions'
 import {
   clearBasket,
-  deleteUserFailure,
-  deleteUserRequest,
-  deleteUserSuccess,
+  loginUserCookiesFailure, loginUserCookiesRequest, loginUserCookiesSuccess,
   loginUserFailure,
   loginUserRequest,
   loginUserSuccess,
@@ -36,9 +34,7 @@ export function* registrationUserSaga({payload: userData}) {
     Cookies.remove('greenlife')
     const response = yield axiosApi.post('/users', userData)
     yield put(registrationSuccess(response.data))
-    if (response.data) {
-      yield put(historyPush('/login'))
-    }
+    Cookies.set('greenlife', response.data?.token, {expires: 60, secure: true})
     yield put(clearBasket())
     yield Toast.fire({
       icon: 'success',
@@ -55,23 +51,26 @@ export function* registrationUserSaga({payload: userData}) {
   }
 }
 
+export function* loginUserCookiesSaga() {
+  try {
+    const response = yield axiosApi.post(`/users/sessions/cookies?token=${Cookies.get('greenlife')}`)
+
+    yield put(loginUserCookiesSuccess(response.data))
+  } catch (e) {
+    yield put(loginUserCookiesFailure())
+  }
+}
+
 export function* loginUserSaga({payload: userData}) {
   try {
-    if (!userData) {
-      let response = yield axiosApi.post(`/users/sessions`)
+    Cookies.remove('greenlife')
+    let response = yield axiosApi.post(`/users/sessions`, userData)
+    yield put(loginUserSuccess(response.data))
 
-      yield put(loginUserSuccess(response.data))
+    if (userData.remember) {
+      Cookies.set('greenlife', response.data?.token, {expires: 60, secure: true, sameSite: "none"})
     }
-    if (userData) {
-      Cookies.remove('greenlife')
-      let response = yield axiosApi.post(`/users/sessions`, userData)
-
-      yield put(loginUserSuccess(response.data))
-
-      if (response.data) {
-        yield put(historyPush('/'))
-      }
-    }
+    yield put(historyPush('/'))
 
     yield put(clearBasket())
     yield Toast.fire({
@@ -89,9 +88,9 @@ export function* loginUserSaga({payload: userData}) {
   }
 }
 
-export function* logoutUserSaga() {
+export function* logoutUserSaga({payload: token}) {
   try {
-    yield axiosApi.delete('users/sessions')
+    yield axiosApi.delete(`users/sessions?token=${token}`)
 
     yield put(clearBasket())
 
@@ -105,27 +104,9 @@ export function* logoutUserSaga() {
   }
 }
 
-export function* deleteUserSaga({payload: id}) {
-  try {
-    yield axiosApi.delete(`users/${id}`)
-    yield put(deleteUserSuccess())
-
-    yield Toast.fire({
-      icon: 'success',
-      title: 'Пользователь успешно удалён!',
-    })
-  } catch (e) {
-    yield put(deleteUserFailure(e))
-    yield Toast.fire({
-      icon: 'error',
-      title: 'Ошибка!',
-    })
-  }
-}
-
 const userSagas = [
   takeEvery(loginUserRequest, loginUserSaga),
-  takeEvery(deleteUserRequest, deleteUserSaga),
+  takeEvery(loginUserCookiesRequest, loginUserCookiesSaga),
   takeEvery(registrationRequest, registrationUserSaga),
   takeEvery(logoutUser, logoutUserSaga),
 ]

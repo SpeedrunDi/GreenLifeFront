@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {makeStyles} from "tss-react/mui";
-import {AppBar, Grid, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, CircularProgress, Grid, Toolbar, Typography} from "@mui/material";
 import Anonymous from "./Menu/Anonymous";
 import UserMenu from "./Menu/UserMenu";
 import BasketIcon from "./BasketIcon/BasketIcon";
@@ -21,6 +21,9 @@ const useStyles = makeStyles()(theme => ({
     '&:hover': {
       color: 'inherit'
     },
+    [theme.breakpoints.down(550)]: {
+      fontSize: "24px"
+    }
   },
   staticToolbar: {
     marginBottom: theme.spacing(2)
@@ -37,6 +40,7 @@ const useStyles = makeStyles()(theme => ({
 const AppToolbar = () => {
   const { classes } = useStyles();
   const user = useSelector(state => state.users.user);
+  const loading = useSelector(state => state.users.loading);
 
   return (
     <>
@@ -51,9 +55,15 @@ const AppToolbar = () => {
              </Typography>
            </Grid>
 
-           <Grid item display="flex">
+           <Grid item display="flex" alignItems="center">
              <BasketIcon/>
-             {user ? <UserMenu user={user} link={classes.link}/> : <Anonymous link={classes.link}/>}
+             {loading ? (
+               <Box pt="2px">
+                 <CircularProgress size={30} color="inherit"/>
+               </Box>
+             ) : (
+               user ? <UserMenu user={user} link={classes.link}/> : <Anonymous link={classes.link}/>
+             )}
            </Grid>
          </Grid>
        </Toolbar>

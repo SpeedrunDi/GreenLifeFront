@@ -49,7 +49,13 @@ const Main = () => {
             })}
           </Grid>
         </>
-      ) : <Typography variant="h3" mangin="150px 20%" color="red">Временно нет товаров</Typography>
+      ) : <Typography variant="h3"
+                      margin="150px 0"
+                      textAlign="center"
+                      color="red"
+                      sx={{fontSize: {xs: "30px", sm: "48px"}}}
+      >Временно нет товаров
+      </Typography>
       }
     </Grid>
   );

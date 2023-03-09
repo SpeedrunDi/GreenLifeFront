@@ -1,7 +1,6 @@
 import {put, takeEvery} from 'redux-saga/effects'
 import Swal from 'sweetalert2'
 import axiosApi from '../../axiosApi'
-
 import {
   fetchProductRequest,
   fetchProductSuccess,
@@ -54,9 +53,10 @@ export function* fetchProductsSaga() {
   }
 }
 
-export function* createProductSaga({payload: productData}) {
+export function* createProductSaga({payload}) {
   try {
-    yield axiosApi.post(`/products`, productData)
+    const {productData, token} = payload
+    yield axiosApi.post(`/products?token=${token}`, productData)
     yield put(createProductSuccess())
     yield Toast.fire({
       icon: 'success',
@@ -71,9 +71,10 @@ export function* createProductSaga({payload: productData}) {
   }
 }
 
-export function* changeStockProductSaga({payload: id}) {
+export function* changeStockProductSaga({payload}) {
   try {
-    yield axiosApi.patch(`/products/${id}`)
+    const {_id, token} = payload
+    yield axiosApi.patch(`/products/${_id}?token=${token}`)
     yield put(changeStockProductSuccess())
     yield put(fetchProductsRequest())
     yield Toast.fire({
@@ -89,9 +90,10 @@ export function* changeStockProductSaga({payload: id}) {
   }
 }
 
-export function* deleteProductSaga({payload: id}) {
+export function* deleteProductSaga({payload}) {
   try {
-    yield axiosApi.delete(`/products/${id}`)
+    const {_id, token} = payload
+    yield axiosApi.delete(`/products/${_id}?token=${token}`)
     yield put(deleteProductSuccess())
     yield put(fetchProductsRequest())
     yield Toast.fire({

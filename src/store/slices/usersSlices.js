@@ -26,6 +26,17 @@ const usersSlice = createSlice({
       state.loading = false
       state.error = action.payload
     },
+    loginUserCookiesRequest(state) {
+      state.loading = true
+      state.loginError = null
+    },
+    loginUserCookiesSuccess(state, action) {
+      state.loading = false
+      state.user = action.payload
+    },
+    loginUserCookiesFailure(state) {
+      state.loading = false
+    },
     loginUserRequest(state) {
       state.loading = true
       state.loginError = null
@@ -40,16 +51,6 @@ const usersSlice = createSlice({
     },
     logoutUser(state) {
       state.user = null
-    },
-    deleteUserRequest(state) {
-      state.deleteLoading = true
-    },
-    deleteUserSuccess(state) {
-      state.deleteLoading = false
-    },
-    deleteUserFailure(state, action) {
-      state.deleteLoading = false
-      state.deleteError = action.payload
     },
     selectProduct(state, action) {
       state.basket = [...state.basket, action.payload]
