@@ -94,12 +94,7 @@ const Login = () => {
           >
             Войти
           </LoadingButton>
-          <Grid container>
-            <Grid item xs>
-              <Link to="/">
-                Забыли пароль?
-              </Link>
-            </Grid>
+          <Grid container justifyContent="flex-end">
             <Grid item>
               <Link to="/register">
                 У вас нету аккаунта? Зарегистрируйтесь

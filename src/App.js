@@ -1,5 +1,5 @@
 import React from 'react'
-import {Redirect, Route, Switch} from 'react-router-dom'
+import {Route, Switch} from 'react-router-dom'
 import Cookies from 'js-cookie'
 import {Typography} from "@mui/material"
 import {useSelector} from "react-redux"
@@ -9,7 +9,7 @@ import Main from "./containers/Main/Main"
 import Layout from "./components/UI/Layout/Layout"
 import AddProduct from "./containers/AddProduct/AddProduct"
 import Basket from "./containers/Basket/Basket"
-import Orders from "./containers/Orders/Orders"
+import OrdersHistory from "./containers/OrdersHistory/OrdersHistory"
 import Product from "./containers/Product/Product"
 
 const App = () => {
@@ -22,9 +22,9 @@ const App = () => {
         <Route path="/register" component={Register}/>
         <Route path="/login" component={Login}/>
         <Route path="/basket" component={Basket}/>
-        {Cookies.get('greenlife') || user ? <Route path="/add_product" component={AddProduct}/> : <Redirect to="/"/>}
-        {Cookies.get('greenlife') || user ? <Route path="/orders" component={Orders}/> : <Redirect to="/"/>}
         <Route path="/products/:id" component={Product}/>
+        {(Cookies.get('greenlife') || user) && <Route path="/add_product" component={AddProduct}/>}
+        {(Cookies.get('greenlife') || user) && <Route path="/orders" component={OrdersHistory}/>}
         <Route path="*"
                render={() => <Typography
                  textTransform="uppercase"

@@ -31,6 +31,15 @@ const productsSlice = createSlice({
     getOrdersFailure(state) {
       state.loading = false
     },
+    updateStatusRequest(state) {
+      state.loading = true
+    },
+    updateStatusSuccess(state) {
+      state.loading = false
+    },
+    updateStatusFailure(state) {
+      state.loading = false
+    },
   }
 })
 

@@ -7,7 +7,7 @@ import {
   createOrderSuccess,
   getOrdersFailure,
   getOrdersRequest,
-  getOrdersSuccess
+  getOrdersSuccess, updateStatusFailure, updateStatusRequest, updateStatusSuccess
 } from "../actions/ordersActions";
 import {clearBasket} from "../actions/usersActions";
 
@@ -22,9 +22,11 @@ const Toast = Swal.mixin({
   position: "top-end",
 })
 
-export function* getOrdersSaga({payload: token}) {
+export function* getOrdersSaga({payload}) {
   try {
-    const response = yield axiosApi.get(`/orders?token=${token}`)
+    const {token, status} = payload
+
+    const response = yield axiosApi.get(`/orders?token=${token}&status=${status}`)
     yield put(getOrdersSuccess(response.data))
   } catch (e) {
     yield put(getOrdersFailure())
@@ -58,9 +60,21 @@ export function* createOrderSaga({payload: orderData}) {
   }
 }
 
+export function* updateStatusSaga({payload}) {
+  try {
+    const {id, orderStatus, token} = payload
+    yield axiosApi.patch(`/orders/${id}?token=${token}&status=${orderStatus}`)
+
+    yield put(updateStatusSuccess())
+  } catch (e) {
+    yield put(updateStatusFailure())
+  }
+}
+
 const orderSagas = [
   takeEvery(getOrdersRequest, getOrdersSaga),
   takeEvery(createOrderRequest, createOrderSaga),
+  takeEvery(updateStatusRequest, updateStatusSaga),
 ]
 
 export default orderSagas

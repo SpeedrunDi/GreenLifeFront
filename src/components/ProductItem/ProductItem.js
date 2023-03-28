@@ -49,11 +49,16 @@ const ProductItem = ({_id, title, price, image, disabled, stock}) => {
         display: "flex",
         flexDirection: "column"
       }}>
-        <CardHeader title={title} sx={{marginBottom: "auto"}}/>
+        <CardHeader title={title}
+                    sx={{marginBottom: "auto", color: "inherit", textDecoration: "none"}}
+                    component={Link}
+                    to={'/products/' + _id}
+        />
         <CardMedia
           title={title}
           image={cardImage}
           sx={{paddingTop: '56.25%', height: 0}}
+          component={Link} to={'/products/' + _id}
         />
         <CardContent>
           <strong>

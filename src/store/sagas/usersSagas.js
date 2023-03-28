@@ -34,7 +34,7 @@ export function* registrationUserSaga({payload: userData}) {
     Cookies.remove('greenlife')
     const response = yield axiosApi.post('/users', userData)
     yield put(registrationSuccess(response.data))
-    Cookies.set('greenlife', response.data?.token, {expires: 60, secure: true})
+    Cookies.set('greenlife', response.data?.token, {expires: 60, secure: true, sameSite: "none"})
     yield put(clearBasket())
     yield Toast.fire({
       icon: 'success',

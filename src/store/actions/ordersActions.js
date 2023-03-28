@@ -6,5 +6,8 @@ export const {
   createOrderFailure,
   getOrdersRequest,
   getOrdersSuccess,
-  getOrdersFailure
+  getOrdersFailure,
+  updateStatusRequest,
+  updateStatusSuccess,
+  updateStatusFailure
 } = ordersSlices.actions
